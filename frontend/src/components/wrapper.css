@@ -1,0 +1,25 @@
+.wrapper{
+    width: 800px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    
+  }
+  .wrapper::after{
+    content:"";
+    position: absolute;
+    border-radius:10px;
+    width:100%;
+    height:0;
+    background-color:#373c4f6a;
+    top:0px;
+    left:0px;
+    z-index:1;
+  }
+  .wrapper.cover::after{
+    height:100%;
+  }

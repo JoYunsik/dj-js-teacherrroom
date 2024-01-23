@@ -1,0 +1,116 @@
+.bookings{
+    padding:0;
+    display:flex;
+    justify-content: space-around;
+    position:absolute;
+    top:0;
+    left:50%;
+    width:505px;
+    transform: translateX(-50%);
+ }
+.day-wrapper{
+    display: flex;
+    flex-direction:column;
+    gap:5px;
+    width:calc(100% / 5.5);
+    height:100%;
+    margin:0 2.5px;
+  }
+
+  .booking{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 0.5px solid rgb(196, 196, 196) ;
+    border-radius: 5px;
+    cursor: pointer;
+    height:70px;
+    gap:5px;
+    width:100%;
+}
+
+/* .booking.empty:hover{
+    background-color: #eeecec;
+    border: 1px dashed;
+  } */
+.booking.empty:hover{
+  background-color: #eaf4f8; 
+}
+.add-event-wrapper{
+  overflow: hidden;
+  /* background-color:rgb(202, 223, 243); */
+  border-radius: 10px;
+  width:100%;
+  height:100%
+
+}
+
+.add-event-header{
+  width:100%;
+  height: 50px;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:0 20px;
+  border-bottom: 1px solid;
+}
+.add-event-header .title {
+  font-size:1.2rem;
+  font-weight: 500;
+}
+.add-event-body {
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:space-around;
+  
+  padding:10px;
+}
+.add-event-right{
+  width:100%;
+  height:100%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.add-event-left{
+  width:100%;
+  height:100%;
+  border-right: 1px dashed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.add-event-body .add-event-input{
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.add-event-body .add-event-input input {
+  width: 100px;
+  height: 100%;
+  outline: none;
+  border: none;
+  padding: 0 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #373c4f;
+}
+
+
+.modal .ant-modal-content {
+  background-color: rgb(202, 223, 243);
+}
+
+.modal .ant-modal-header {
+  background-color: rgb(202, 223, 243);
+}
+
+.modal .ant-modal-footer {
+  background-color: rgb(202, 223, 243);
+}

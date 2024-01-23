@@ -1,0 +1,15 @@
+.times-left{ 
+    margin-left: 75px;
+}
+.time{
+    margin-bottom: 5px;
+    font-size: 17px;
+    font-weight: 600;
+    width:68px;
+    height: 70px;
+    background-color:rgb(238, 238, 238);
+    text-align: center;
+    border-radius: 10px;
+    line-height:70px; 
+    border:1px solid rgb(238, 238, 238);
+  }

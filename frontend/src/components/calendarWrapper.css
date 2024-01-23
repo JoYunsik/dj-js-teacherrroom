@@ -1,0 +1,32 @@
+.calendar-wrapper{ 
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.iconwrapper{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    text-align: center;
+}
+.icon{
+    height: 3rem;
+    width: 38px;
+    margin: 0 5px;
+    padding:25px 0px;
+    cursor: pointer;
+    color: #878787;
+    text-align: center;
+    line-height: 38px;
+    font-size: 1.9rem;
+    user-select: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    justify-content: center;
+  }
+
+  .icon:hover{
+    background-color: #eae9e9;
+    color:black;
+  }

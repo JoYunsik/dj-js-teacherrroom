@@ -1,0 +1,33 @@
+.calendar{
+    padding: 10px;
+    flex-grow: 6;
+    padding-bottom:0px;
+}
+.calendar ul{
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+}
+.calendar .days{
+    margin-bottom: 20px;    
+}
+.calendar li{
+    color: #333;
+    width: calc(100% / 7);
+    font-size: 1.07rem;
+}
+.calendar .weeks li{
+    font-size:15px;
+    font-weight: 500;
+    cursor: default;
+}
+.calendar .weeks .weekend{
+    color: red;
+}
+.calendar .days li{
+    z-index: 1;
+    position: relative;
+    margin-top: 20px;
+    font-size: 23px;
+}
