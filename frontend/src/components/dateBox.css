@@ -1,0 +1,41 @@
+.event{
+background-color:rgb(144, 144, 236);
+width:85%;
+text-align: center;
+border-radius: 5px;
+font-weight:500;
+display:flex;
+justify-content: space-around;
+padding: 0 0px;
+}
+.event .event-title{
+color:white;
+font-size:1.1rem;
+font-weight:600;
+flex-grow:3;
+text-align: center;
+
+}
+.event .close-icon{
+font-size:1rem;
+text-align: center;
+color:yellow;
+margin-right:2px;
+}
+.event .close-icon:hover{
+color:red;
+}
+.event.default{
+background-color:rgb(237, 203, 136);
+width:85%;
+text-align: center;
+border-radius: 5px;
+font-weight:500;
+display:flex;
+justify-content: space-around;
+padding: 0 3px;
+}
+
+.booking{
+    padding:0;
+}

@@ -1,12 +1,12 @@
 import { useSelector} from 'react-redux';
 import CurrentDate from '../components/currentDate';
-
 const CurrentDateContainer =()=> {
-    const {currDate, currYear, currMonth, currDay} = useSelector(({dateinfo})=>({
+    const {currDate, currYear, currMonth, currDay,currRoom} = useSelector(({dateinfo,rooms})=>({
         currDate: dateinfo.currDate,
         currYear: dateinfo.currYear, 
         currMonth: dateinfo.currMonth, 
         currDay: dateinfo.currDay,
+        currRoom: rooms.currRoom,
     }))
 
     return(
@@ -15,7 +15,8 @@ const CurrentDateContainer =()=> {
             currYear={currYear}
             currMonth={currMonth}
             currDay={currDay}
-
+            currRoom={currRoom}
+            // insert ={weekdatainsert}
         />
     )
 }

@@ -4,6 +4,7 @@ import { Button, Modal, notification, Alert } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
 import {insert,remove} from "../modules/events";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import DateBox from './dateBox';
 
 const Bookings = ()=>{
     const {currDate, currYear, currMonth, currDay} = useSelector(({dateinfo})=>({
@@ -12,6 +13,7 @@ const Bookings = ()=>{
       currMonth: dateinfo.currMonth, 
       currDay: dateinfo.currDay,
     }))
+    const weekdata = useSelector(({weekdata})=>weekdata);
     const {currRoom, rooms} = useSelector(({rooms})=>({
       currRoom:rooms.currRoom,
       rooms: rooms.rooms
@@ -55,33 +57,41 @@ const Bookings = ()=>{
     }
     // 박스 눌렀을때
     const onBoxClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       notification.destroy();
       let bookingDate =''
       let bookingMonth=''
       let bookingYear =''
-      const parentNodes = [...e.target.parentElement.children];
-      const bookingIndex = parentNodes.indexOf(e.target);
-      if(e.target.parentElement.classList.contains('monday')){
+      let target=''
+      if(e.target.classList.contains('event-title')){
+        target = e.target.parentElement.parentElement.parentElement
+      } else{
+        target = e.target.parentElement
+      }
+      const parentNodes = [...target.children];
+      const bookingIndex = parentNodes.indexOf(target.children[0]);
+      if(target.classList.contains('0')){
         bookingDate = new Date(currYear, currMonth, currDate+(1-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(1-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(1-currDay)).getFullYear();
       }
-      if(e.target.parentElement.classList.contains('tuesday')){
+      if(target.classList.contains('1')){
         bookingDate = new Date(currYear, currMonth, currDate+(2-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(2-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(2-currDay)).getFullYear();
       }
-      if(e.target.parentElement.classList.contains('wednesday')){
+      if(target.classList.contains('2')){
         bookingDate = new Date(currYear, currMonth, currDate+(3-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(3-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(3-currDay)).getFullYear();
       }
-      if(e.target.parentElement.classList.contains('thursday')){
+      if(target.classList.contains('3')){
         bookingDate = new Date(currYear, currMonth, currDate+(4-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(4-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(4-currDay)).getFullYear();
       }
-      if(e.target.parentElement.classList.contains('friday')){
+      if(target.classList.contains('4')){
         bookingDate = new Date(currYear, currMonth, currDate+(5-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(5-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(5-currDay)).getFullYear();
@@ -102,6 +112,11 @@ const Bookings = ()=>{
       }
       
     };
+    // 삭제 버튼을 클릭
+    const onDeleteClick =(id)=>(e)=>{
+      e.stopPropagation();
+      eventRemove(id);
+    }
     // 알림창 생성 함수
     const openInputNotification = (input) => {
       notification.info({
@@ -130,15 +145,15 @@ const Bookings = ()=>{
     }
     // 모달 ok버튼 눌렀을때
     const handleOk = () => {
-      if(gradeText=="" && classText=="" && exclusiveText=="" && kindergardenText=="" ){
+      if(gradeText==="" && classText==="" && exclusiveText==="" && kindergardenText==="" ){
         openInputNotification('예약할 내용')
         return;
       }
-      if(gradeText!=="" && classText==""){
+      if(gradeText!=="" && classText===""){
         openInputNotification('반');
         return;
       }
-      if(gradeText=="" && classText!==""){
+      if(gradeText==="" && classText!==""){
         openInputNotification('학년')
         return;
       }
@@ -245,46 +260,16 @@ const Bookings = ()=>{
     };
     return(
         <div className="bookings">
-          <div className="day-wrapper monday">
-            <Button id='1' className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='2' className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='3' className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='4'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='5'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='6'className="booking empty" onClick={onBoxClick}></Button>
-          </div>
-          <div className="day-wrapper tuesday">
-            <Button id='1'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='2'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='3'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='4'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='5'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='6'className="booking empty" onClick={onBoxClick}></Button>
-          </div>
-          <div className="day-wrapper wednesday">
-            <Button id='1'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='2'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='3'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='4'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='5'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='6'className="booking empty" onClick={onBoxClick}></Button>
-          </div>
-          <div className="day-wrapper thursday">
-            <Button id='1'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='2'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='3'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='4'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='5'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='6'className="booking empty" onClick={onBoxClick}></Button>
-          </div>
-          <div className="day-wrapper friday">
-            <Button id='1'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='2'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='3'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='4'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='5'className="booking empty" onClick={onBoxClick}></Button>
-            <Button id='6'className="booking empty" onClick={onBoxClick}></Button>
-          </div>
+          {weekdata.map((data, idx) => (
+            <div className={`day-wrapper ${idx}`} key={idx}>
+              <DateBox id='0' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='1' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='2' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='3' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='4' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='5' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+            </div>
+          ))}
           <Modal
             centered
             title="Title"

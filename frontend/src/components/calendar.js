@@ -1,7 +1,7 @@
 import './calendar.css';
 import CalendarDate from './Calendardate';
 
-const Calendar =({currDate,currYear,currMonth,currDay})=> {
+const Calendar =({currDate,currYear,currMonth,currDay,currRoom})=> {
     return(
         <div className='calendar'>
             <ul className='weeks'>
@@ -18,6 +18,7 @@ const Calendar =({currDate,currYear,currMonth,currDay})=> {
                 currYear={currYear}
                 currMonth={currMonth}
                 currDay={currDay}
+                currRoom={currRoom}
             />
         </div>
     )
