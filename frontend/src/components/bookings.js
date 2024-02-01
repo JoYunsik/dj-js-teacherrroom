@@ -2,11 +2,12 @@ import './bookings.css'
 import React, { useCallback, useMemo, useState } from 'react';
 import { Button, Modal, notification, Alert } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
-import {insert,remove} from "../modules/events";
+import {insert,remove,removeDefault,clearEvents} from "../modules/events";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import DateBox from './dateBox';
 
-const Bookings = ()=>{
+const Bookings = ({defaultsetting})=>{
+
     const {currDate, currYear, currMonth, currDay} = useSelector(({dateinfo})=>({
       currDate: dateinfo.currDate,
       currYear: dateinfo.currYear, 
@@ -22,11 +23,12 @@ const Bookings = ()=>{
       events:events
     }))
     const dispatch = useDispatch();
-    const eventInsert = useCallback((event)=>dispatch(insert(event)),[dispatch])
-    const eventRemove = useCallback((id)=>dispatch(remove(id)),[dispatch]) 
+    const eventInsert = useCallback((event)=>dispatch(insert(event)),[dispatch]);
+    const eventRemove = useCallback((id)=>dispatch(remove(id)),[dispatch]);
+    const eventRemoveDefault = useCallback((event)=>dispatch(removeDefault(event)),[dispatch]);
+    const handleClearEvents = useCallback((event)=>dispatch(clearEvents(event)),[dispatch]);
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Content of the modal');
     const [gradeText, setGradeText] = useState('');
     const [classText, setClassText] = useState('');
     const [exclusiveText, setExclusiveText] = useState('');
@@ -43,7 +45,7 @@ const Bookings = ()=>{
     const getMaxRoom = ()=>{
       return rooms.filter(room=>room.id==currRoom)[0].max;
     }
-    const max = useMemo(()=>getMaxRoom(),[currRoom,rooms]);
+    // const max = useMemo(()=>getMaxRoom(),[currRoom,rooms]);
     // 예약이 비었는지 check
     const fullCheck = (bookingDate,bookingYear,bookingMonth,bookingIndex,currRoom) =>{
       const eventCheck = events.filter(event => 
@@ -64,13 +66,18 @@ const Bookings = ()=>{
       let bookingMonth=''
       let bookingYear =''
       let target=''
+      let bookingIndex=''
       if(e.target.classList.contains('event-title')){
         target = e.target.parentElement.parentElement.parentElement
       } else{
         target = e.target.parentElement
       }
       const parentNodes = [...target.children];
-      const bookingIndex = parentNodes.indexOf(target.children[0]);
+      if(e.target.classList.contains('event-title')){
+        bookingIndex = parentNodes.indexOf(e.target.parentElement.parentElement)
+      } else{
+        bookingIndex = parentNodes.indexOf(e.target)
+      }
       if(target.classList.contains('0')){
         bookingDate = new Date(currYear, currMonth, currDate+(1-currDay)).getDate();
         bookingMonth =new Date(currYear, currMonth, currDate+(1-currDay)).getMonth();
@@ -96,7 +103,7 @@ const Bookings = ()=>{
         bookingMonth =new Date(currYear, currMonth, currDate+(5-currDay)).getMonth();
         bookingYear = new Date(currYear, currMonth, currDate+(5-currDay)).getFullYear();
       }
-      if(fullCheck(bookingDate,bookingYear,bookingMonth,bookingIndex,currRoom)){
+      if(defaultsetting || fullCheck(bookingDate,bookingYear,bookingMonth,bookingIndex,currRoom)){
         setOpen(true);
         setEventSample(()=>({
           event:'',
@@ -105,6 +112,7 @@ const Bookings = ()=>{
           month:bookingMonth,
           time:bookingIndex,
           room:currRoom,
+          defaultevent: defaultsetting
         }))
       } else {
         console.log('fail');
@@ -113,9 +121,36 @@ const Bookings = ()=>{
       
     };
     // 삭제 버튼을 클릭
-    const onDeleteClick =(id)=>(e)=>{
+    const onDeleteClick =(e,event,defaultsetting)=>{
       e.stopPropagation();
-      eventRemove(id);
+      if(!defaultsetting){
+        eventRemove(event.id);
+      }else {
+        const currYear = event.year
+        let date = event.date;
+        let year = event.year;
+        let month = event.month;
+        let room = event.room;
+        let eventName = event.event;
+        let time = event.time;
+        while(year==currYear){
+          let tmpYear = new Date(year,month,date).getFullYear();
+          let tmpMonth = new Date(year, month,date).getMonth();
+          let tmpDate = new Date(year,month,date).getDate();
+          eventRemoveDefault({
+            date:tmpDate,
+            year:tmpYear,
+            month:tmpMonth,
+            time:time,
+            room:room,
+            event: eventName,
+            defaultevent:true
+          })
+          year=tmpYear;
+          month=tmpMonth;
+          date=tmpDate+7;
+        }
+      }
     }
     // 알림창 생성 함수
     const openInputNotification = (input) => {
@@ -143,6 +178,56 @@ const Bookings = ()=>{
       setExclusiveText('');
       setKindergardenText('');
     }
+    // 이벤트 추가 과정 함수 
+    const addEventProcess =(newEvent, defaultsetting)=>{
+      if(!defaultsetting){
+        eventInsert(newEvent);
+        resetInputs();
+        notification.destroy();
+        setConfirmLoading(true);
+        setOpen(false);
+        setConfirmLoading(false);
+      } else if(defaultsetting){
+        const currYear = newEvent.year
+        let date = newEvent.date;
+        let year = newEvent.year;
+        let month = newEvent.month;
+        let room = newEvent.room;
+        let event = newEvent.event;
+        let time = newEvent.time;
+        eventInsert(newEvent);
+        while(year==currYear){
+          date+=7;
+          let tmpYear = new Date(year,month,date).getFullYear();
+          let tmpMonth = new Date(year, month,date).getMonth();
+          let tmpDate = new Date(year,month,date).getDate();
+          handleClearEvents({
+            date:tmpDate,
+            year:tmpYear,
+            month:tmpMonth,
+            time:time,
+            room:room,
+          });
+          eventInsert({
+            date:tmpDate,
+            year:tmpYear,
+            month:tmpMonth,
+            time:time,
+            room:room,
+            event: event,
+            defaultevent:true
+          })
+          year=tmpYear;
+          month=tmpMonth;
+          date=tmpDate;
+        }
+        resetInputs();
+        notification.destroy();
+        setConfirmLoading(true);
+        setOpen(false);
+        setConfirmLoading(false);
+      }
+    }
     // 모달 ok버튼 눌렀을때
     const handleOk = () => {
       if(gradeText==="" && classText==="" && exclusiveText==="" && kindergardenText==="" ){
@@ -162,39 +247,21 @@ const Bookings = ()=>{
           ...eventSample,
           event: `${gradeText}-${classText}`,
         };
-        setEventSample(newEvent);
-        eventInsert(newEvent);
-        resetInputs();
-        notification.destroy();
-        setConfirmLoading(true);
-        setOpen(false);
-        setConfirmLoading(false);
+        addEventProcess(newEvent,defaultsetting);
       }
       else if(exclusiveText!==""){
         const newEvent = {
           ...eventSample,
           event: exclusiveText,
         };
-        setEventSample(newEvent);
-        eventInsert(newEvent);
-        resetInputs();
-        notification.destroy();
-        setConfirmLoading(true);
-        setOpen(false)
-        setConfirmLoading(false)
+        addEventProcess(newEvent,defaultsetting);
       }
       else if(kindergardenText!==""){
         const newEvent = {
           ...eventSample,
           event: kindergardenText,
         };
-        setEventSample(newEvent);
-        eventInsert(newEvent);
-        resetInputs();
-        notification.destroy();
-        setConfirmLoading(true);
-        setOpen(false)
-        setConfirmLoading(false)
+        addEventProcess(newEvent,defaultsetting);
       }
       else {
         console.log('fail');
@@ -262,12 +329,12 @@ const Bookings = ()=>{
         <div className="bookings">
           {weekdata.map((data, idx) => (
             <div className={`day-wrapper ${idx}`} key={idx}>
-              <DateBox id='0' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
-              <DateBox id='1' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
-              <DateBox id='2' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
-              <DateBox id='3' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
-              <DateBox id='4' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
-              <DateBox id='5' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom}></DateBox>
+              <DateBox id='0' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
+              <DateBox id='1' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
+              <DateBox id='2' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
+              <DateBox id='3' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
+              <DateBox id='4' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
+              <DateBox id='5' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
             </div>
           ))}
           <Modal

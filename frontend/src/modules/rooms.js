@@ -4,11 +4,12 @@ const INSERT = 'rooms/INSERT';
 const REMOVE = 'rooms/REMOVE';
 const SELECT = 'rooms/SELECT';
 
-let id = 2
+let id = 3
 
-export const insert = createAction(INSERT, room =>({
+export const insert = createAction(INSERT, (room,max) =>({
     id:id++,
     room,
+    max,
 }));
 export const remove = createAction(REMOVE, id=>id);
 export const select = createAction(SELECT, id=>id);

@@ -3,12 +3,12 @@ import './wrapper.css'
 import Header from './haeder'
 import CalendarWrapperContainer from '../containers/CalendarWrapperContainer'
 
-const Wrapper= () =>{
+const Wrapper= ({defaultsetting}) =>{
     return(
         <div className='wrapper'>
             <Header/>
             <CalendarWrapperContainer />
-            <BookingWrapper/>
+            <BookingWrapper defaultsetting={defaultsetting}/>
         </div>
     ) 
 }

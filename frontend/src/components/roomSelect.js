@@ -1,13 +1,9 @@
 import { useDispatch } from 'react-redux';
-import './roomSelect.css'
 import { Select,ConfigProvider } from 'antd';
 import { useCallback } from 'react';
-import { reset } from "../modules/weekdata";
 const RoomSelect = ({ rooms, currRoom, select }) => {
-    const dispatch = useDispatch();
-    const weekdatareset = useCallback(()=>dispatch(reset()),[dispatch]); 
     const handleChange = (value) => {
-        weekdatareset();
+        
         select(value);
     };
     return (
@@ -16,16 +12,16 @@ const RoomSelect = ({ rooms, currRoom, select }) => {
                 token: {
                     colorPrimary: '#00b96b',
                     borderRadius: 4,
-                    colorBgContainer: '#f6ffed',
-                    fontSize: 17,
+                    colorBgContainer: '#FCFEFC',
+                    fontSize: 24,        
                 },
             }}
         >
             <Select
                 defaultValue={rooms[0].id}
                 style={{
-                    width: 120,
-                    height: 40,
+                    width: 140,
+                    height: 45,
                 }}
                 onChange={handleChange}
                 options={

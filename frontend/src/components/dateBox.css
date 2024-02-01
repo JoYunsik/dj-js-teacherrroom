@@ -1,12 +1,12 @@
 .event{
 background-color:rgb(144, 144, 236);
-width:85%;
+width:90%;
 text-align: center;
 border-radius: 5px;
 font-weight:500;
 display:flex;
 justify-content: space-around;
-padding: 0 0px;
+padding: 0px 0px 0.5px 0px;
 }
 .event .event-title{
 color:white;
@@ -27,13 +27,6 @@ color:red;
 }
 .event.default{
 background-color:rgb(237, 203, 136);
-width:85%;
-text-align: center;
-border-radius: 5px;
-font-weight:500;
-display:flex;
-justify-content: space-around;
-padding: 0 3px;
 }
 
 .booking{

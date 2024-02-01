@@ -2,6 +2,7 @@ import {createAction, handleActions} from 'redux-actions';
 
 const NEXT = 'dateinfo/NEXT';
 const PREV = 'dateinfo/PREV';
+const GOTODAY = 'dateinfo/TODAY';
 
 const date = new Date();
 const currDate = date.getDate();
@@ -11,6 +12,7 @@ const currDay=date.getDay();
 
 export const next = createAction(NEXT);
 export const prev = createAction(PREV);
+export const goToday= createAction(GOTODAY);
 
 const initialState = {currDate, currYear, currMonth, currDay};
 
@@ -36,6 +38,7 @@ const dateinfo = handleActions(
           currDay: newDate.getDay(),
         };
       },
+      [GOTODAY]: (state,action)=>(initialState)
     },
     initialState
   );

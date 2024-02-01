@@ -3,11 +3,11 @@ import Bookings from './bookings';
 import TimesLeft from './timesLeft';
 import TimesRight from './timesRight';
 
-const BookingWrapper = ()=> {
+const BookingWrapper = ({defaultsetting})=> {
     return(
         <div className='booking-wrapper'>
             <TimesLeft/>
-            <Bookings/>
+            <Bookings defaultsetting={defaultsetting}/>
             <TimesRight/>
         </div>
     )

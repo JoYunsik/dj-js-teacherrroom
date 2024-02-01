@@ -12,7 +12,10 @@ const initialState = [];
 
 const weekdata = handleActions(
     {
-        [ADD] : (state,action)=>state.concat(action.payload),
+        [ADD] : (state,action)=>{
+            const newWeekData = state.concat(action.payload);
+            return(newWeekData.slice(-5))
+        },
         [RESET] : (state,action)=>{return initialState},
     },
     initialState

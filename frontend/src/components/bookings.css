@@ -34,8 +34,9 @@
     background-color: #eeecec;
     border: 1px dashed;
   } */
-.booking.empty:hover{
+.booking:hover{
   background-color: #eaf4f8; 
+  border: 1px solid rgb(59, 91, 234) ;
 }
 .add-event-wrapper{
   overflow: hidden;

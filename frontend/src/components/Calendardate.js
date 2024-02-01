@@ -25,7 +25,6 @@ const CalendarDate = ({currDate,currYear,currMonth,currDay,currRoom}) =>{
             let date = new Date(currYear,currMonth, i).getDate();
             let year = new Date(currYear,currMonth, i).getFullYear();
             let month = new Date(currYear,currMonth, i).getMonth(); 
-            // weekdatainsert({date,year,month,currRoom});
             newweekdata.push({date,year,month,currRoom});        
         }
         for (let i = currDate; i<currDate+(7-currDay); i+=1){
@@ -49,7 +48,6 @@ const CalendarDate = ({currDate,currYear,currMonth,currDay,currRoom}) =>{
             let date = new Date(currYear,currMonth, i).getDate();
             let year = new Date(currYear,currMonth, i).getFullYear();
             let month = new Date(currYear,currMonth, i).getMonth(); 
-            // weekdatainsert({date,year,month,currRoom});
             newweekdata.push({date,year,month,currRoom});    
         }
         newweekdata.slice(1,6).map(data=>weekdatainsert(data));
