@@ -1,6 +1,6 @@
 import './bookings.css'
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button, Modal, notification, Alert } from 'antd';
+import React, { useCallback, useState } from 'react';
+import { Modal, notification } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
 import {insert,remove,removeDefault,clearEvents} from "../modules/events";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
@@ -43,7 +43,7 @@ const Bookings = ({defaultsetting})=>{
     });
     // 방에 예약할 수 있는 max값을 가져옴.
     const getMaxRoom = ()=>{
-      return rooms.filter(room=>room.id==currRoom)[0].max;
+      return rooms.filter(room=>room.id===currRoom)[0].max;
     }
     // const max = useMemo(()=>getMaxRoom(),[currRoom,rooms]);
     // 예약이 비었는지 check
@@ -133,7 +133,7 @@ const Bookings = ({defaultsetting})=>{
         let room = event.room;
         let eventName = event.event;
         let time = event.time;
-        while(year==currYear){
+        while(year===currYear){
           let tmpYear = new Date(year,month,date).getFullYear();
           let tmpMonth = new Date(year, month,date).getMonth();
           let tmpDate = new Date(year,month,date).getDate();
@@ -196,7 +196,7 @@ const Bookings = ({defaultsetting})=>{
         let event = newEvent.event;
         let time = newEvent.time;
         eventInsert(newEvent);
-        while(year==currYear){
+        while(year===currYear){
           date+=7;
           let tmpYear = new Date(year,month,date).getFullYear();
           let tmpMonth = new Date(year, month,date).getMonth();

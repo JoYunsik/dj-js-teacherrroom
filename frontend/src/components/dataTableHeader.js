@@ -14,7 +14,7 @@ const DataTableHeader = ({selectedId,eventRemove}) =>{
                 left:'50%',
                 transform: 'translate(-50%, -50%)',
             }}>
-                데이터 관리 삭제
+                데이터 조회 / 삭제
             </h1>
             <Button 
                 type='primary' 

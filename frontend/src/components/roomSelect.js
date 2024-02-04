@@ -1,9 +1,7 @@
-import { useDispatch } from 'react-redux';
 import { Select,ConfigProvider } from 'antd';
-import { useCallback } from 'react';
+
 const RoomSelect = ({ rooms, currRoom, select }) => {
     const handleChange = (value) => {
-        
         select(value);
     };
     return (

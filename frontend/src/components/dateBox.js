@@ -55,7 +55,7 @@ const DateBox =({onBoxClick,onDeleteClick,id,weekdata,events,currRoom,defaultset
             )
         })
         setEventChildren(newEventchildren);
-    },[weekdata,events,id,currRoom,defaultsetting])
+    },[weekdata,events,id,currRoom,defaultsetting,onDeleteClick])
     return (
         <div className="booking empty" onClick={onBoxClick}>
             {eventChildren}

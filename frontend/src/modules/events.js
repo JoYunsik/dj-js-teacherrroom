@@ -5,7 +5,7 @@ const REMOVE = 'events/REMOVE';
 const REMOVEDEFAULT = 'events/REMOVEDEFAULT';
 const CLEAREVENTS ='events/CLEAREVENTS';
 
-let id = 3
+let id = 302;
 export const insert = createAction(INSERT, event=>({
     ...event,
     id: id++,

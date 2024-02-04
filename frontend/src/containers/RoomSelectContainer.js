@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {insert,remove,select} from "../modules/rooms";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import RoomSelect from "../components/roomSelect"
 
 const RoomSelectContainer = () =>{
@@ -9,9 +9,10 @@ const RoomSelectContainer = () =>{
         rooms:rooms.rooms
     }));
     const dispatch = useDispatch();
-    const roomInsert = useCallback(()=>dispatch(insert()),[dispatch]);
-    const roomRemove = useCallback((id)=>dispatch(remove(id)),[dispatch]);
     const roomSelect = useCallback((id)=>dispatch(select(id)),[dispatch]);
+    useEffect(()=>{
+        roomSelect(rooms[0].id)
+    },[rooms])
     return(
         <RoomSelect
             currRoom={currRoom}

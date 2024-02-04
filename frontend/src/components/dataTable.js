@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table } from 'antd';
 
-
 const DataTable = ({events, rooms, onSetSelectedId})=>{
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');

@@ -1,12 +1,11 @@
 import { Button, ConfigProvider, Space, Table, Popconfirm, } from 'antd';
-import { insert, remove } from '../modules/rooms';
+import { remove } from '../modules/rooms';
 import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 
 const { Column } = Table;
 const RoomList =({rooms})=>{
     const dispatch = useDispatch();
-    const roomInsert = useCallback((room,max)=>dispatch(insert(room,max)),[dispatch]);
     const roomRemove = useCallback((id)=>dispatch(remove(id)),[dispatch]);
     const onRemove=(record)=>{
         roomRemove(record.key);

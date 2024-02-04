@@ -24,20 +24,28 @@ function getItem(label, key, icon, children, type) {
     ]),
   ];
 
+const yellow = '#FEFFF0';
+const blue = '#ECEEFD';
+const red = '#FDEDEC';
 const Menubar = ({setDefaultsetting})=>{
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(true);
+    const [color, setColor] = useState(yellow)
     const onClick = (e) => {
         if(e.key==='1'){
-          setDefaultsetting(false)
-          navigate('/')
+          setColor(yellow);
+          setDefaultsetting(false);
+          navigate('/');
         } else if(e.key==='2'){
-          setDefaultsetting(true)
-          navigate('/')
+          setColor(blue);
+          setDefaultsetting(true);
+          navigate('/');
         }else if(e.key==='3'){
-          navigate('settings/rooms/')
+          setColor(red);
+          navigate('settings/rooms/');
         } else if(e.key==='4'){
-          navigate('settings/datatable/')
+          setColor(red);
+          navigate('settings/datatable/');
         }
       };
 
@@ -45,13 +53,14 @@ const Menubar = ({setDefaultsetting})=>{
     <Layout
         style={{
             minHeight: '100vh',
+            zIndex:'-1'
         }}
     >
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onClick} />
       </Sider>
-      <Content style={{backgroundColor:'#f5f2e2'}}>
+      <Content style={{backgroundColor:color}}>
         <Outlet/>
       </Content>
     </Layout>

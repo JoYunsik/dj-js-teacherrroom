@@ -1,10 +1,17 @@
 .header{
-    display: flex;
-    align-items: center;
-    padding: 40px 75px 10px;
-    justify-content: right;
-  }
-
+  display: flex;
+  align-items: center;
+  padding: 40px 75px 10px;
+  justify-content: right;
+}
+.help {
+  position:absolute;
+  right:5%;
+  font-size:1.5rem;
+}
+.help:hover{
+  opacity:50%
+}
 .headerInfo{
   display: flex;
   position:absolute;
