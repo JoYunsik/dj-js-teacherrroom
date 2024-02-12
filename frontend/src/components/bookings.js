@@ -1,10 +1,11 @@
 import './bookings.css'
 import React, { useCallback, useState } from 'react';
-import { Modal, notification } from 'antd';
+import { notification } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
 import {insert,remove,removeDefault,clearEvents} from "../modules/events";
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import DateBox from './dateBox';
+import ModalInputs from './modalInputs';
 
 const Bookings = ({defaultsetting})=>{
 
@@ -38,14 +39,13 @@ const Bookings = ({defaultsetting})=>{
       year:'',
       month:'',
       time:'',
-      room:'',
+      room:1,
       event:'',
     });
     // 방에 예약할 수 있는 max값을 가져옴.
     const getMaxRoom = ()=>{
       return rooms.filter(room=>room.id===currRoom)[0].max;
     }
-    // const max = useMemo(()=>getMaxRoom(),[currRoom,rooms]);
     // 예약이 비었는지 check
     const fullCheck = (bookingDate,bookingYear,bookingMonth,bookingIndex,currRoom) =>{
       const eventCheck = events.filter(event => 
@@ -195,6 +195,9 @@ const Bookings = ({defaultsetting})=>{
         let room = newEvent.room;
         let event = newEvent.event;
         let time = newEvent.time;
+        handleClearEvents({
+          date,year,month,time,room
+        })
         eventInsert(newEvent);
         while(year===currYear){
           date+=7;
@@ -266,11 +269,6 @@ const Bookings = ({defaultsetting})=>{
       else {
         console.log('fail');
       }
-      
-      // setTimeout(() => {
-      //   setOpen(false);
-      //   setConfirmLoading(false);
-      // }, 2000);
     };
     // 모달 닫았을때
     const handleCancel = () => {
@@ -337,40 +335,22 @@ const Bookings = ({defaultsetting})=>{
               <DateBox id='5' idx={idx + 1} onBoxClick={onBoxClick} onDeleteClick={onDeleteClick}weekdata={data} events={events} currRoom={currRoom} defaultsetting={defaultsetting}></DateBox>
             </div>
           ))}
-          <Modal
-            centered
-            title="Title"
+          <ModalInputs
             open={open}
-            onOk={handleOk}
+            handleOk={handleOk}
             confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-            className='modal'
-          >
-            <div className='add-event-wrapper'>
-              <div className="add-event-body">
-                <div className="add-event-left">
-                  <div className="add-event-input">
-                    <input type="number" placeholder="학년" value={gradeText}className="grade" onChange={onChangeGradeText} />
-                    <label> 학년</label>
-                  </div>
-                  <div className="add-event-input">
-                    <input type="number" placeholder="반" value={classText} className="class" onChange={onChangeClassText}/>
-                    <label>반</label>
-                  </div>
-                </div>
-                <div className="add-event-right">
-                  <div className="add-event-input">
-                    <input type="text" placeholder="전담교사" value={exclusiveText} className="exclusive" onChange={onChangeExclusiveText} />
-                    <label>전담교사</label>
-                  </div>
-                  <div className="add-event-input">
-                  <input type="text" placeholder="유치원/특수" value={kindergardenText} className="kindergarden" onChange={onChangeKindergardenText} />
-                  <label>반</label>
-                </div>
-              </div>
-            </div>
-            </div>
-          </Modal>
+            handleCancel={handleCancel}
+            gradeText={gradeText}
+            classText={classText}
+            exclusiveText={exclusiveText}
+            kindergardenText={kindergardenText}
+            onChangeGradeText={onChangeGradeText}
+            onChangeClassText={onChangeClassText}
+            onChangeExclusiveText={onChangeExclusiveText}
+            onChangeKindergardenText={onChangeKindergardenText}
+            eventSample={eventSample}
+            rooms={rooms}
+          />
         </div>
     )
 }

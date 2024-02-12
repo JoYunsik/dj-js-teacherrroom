@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   SettingOutlined,
   FormOutlined
@@ -29,22 +29,31 @@ const blue = '#ECEEFD';
 const red = '#FDEDEC';
 const Menubar = ({setDefaultsetting})=>{
     const navigate = useNavigate();
+    const location = useLocation();
     const [collapsed, setCollapsed] = useState(true);
-    const [color, setColor] = useState(yellow)
+    const [color, setColor] = useState(yellow);
+    useEffect(()=>{
+      const page = location.pathname;
+      if (page === '/'){
+        setDefaultsetting(false);
+        setColor(yellow);
+      } else if (page ==='/set-default/'){
+        setDefaultsetting(true);
+        setColor(blue);
+      }else if (page ==='/settings/rooms/'){
+        setColor(red);
+      }else if (page ==='/settings/datatable/'){
+        setColor(red);
+      }
+    },[location,color,setColor])
     const onClick = (e) => {
         if(e.key==='1'){
-          setColor(yellow);
-          setDefaultsetting(false);
           navigate('/');
         } else if(e.key==='2'){
-          setColor(blue);
-          setDefaultsetting(true);
-          navigate('/');
+          navigate('set-default/');
         }else if(e.key==='3'){
-          setColor(red);
           navigate('settings/rooms/');
         } else if(e.key==='4'){
-          setColor(red);
           navigate('settings/datatable/');
         }
       };

@@ -10,6 +10,10 @@ const RoomList =({rooms})=>{
     const onRemove=(record)=>{
         roomRemove(record.key);
     }
+
+    if (!rooms) {
+        return <div>Loading...</div>; // 또는 다른 로딩 처리
+    }
     const data = rooms.map((room)=>({
         key:room.id,
         roomname:room.room,

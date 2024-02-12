@@ -1,184 +1,65 @@
-import {createAction, handleActions} from 'redux-actions';
-
+import {handleActions} from 'redux-actions';
+import createRequestThunk from '../lib/createRequestThunk';
+import { getEvents,postEvents,deleteEvents,removeEvents,clearAllEvents } from '../lib/api';
+let id = 1;
+const INITIATE = 'events/INITIATE';
 const INSERT = 'events/INSERT';
 const REMOVE = 'events/REMOVE';
 const REMOVEDEFAULT = 'events/REMOVEDEFAULT';
 const CLEAREVENTS ='events/CLEAREVENTS';
 
-let id = 302;
-export const insert = createAction(INSERT, event=>({
-    ...event,
-    id: id++,
-}));
-export const remove = createAction(REMOVE,id=>id);
-export const removeDefault = createAction(REMOVEDEFAULT, removeEvent=>removeEvent);
-export const clearEvents = createAction(CLEAREVENTS, clearEvent=>clearEvent);
-const sample =[{
-    event: '2-2',
-    date: 29,
-    year: 2024,
-    month: 0,
-    time: 1,
-    room: 1,
-    defaultevent: true,
-    id: 3
-  },
-  {
-    date: 5,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 1,
-    event: '2-2',
-    defaultevent: true,
-    id: 4
-  },
-  {
-    date: 12,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 1,
-    event: '2-2',
-    defaultevent: true,
-    id: 5
-  },
-  {
-    date: 19,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 1,
-    event: '2-2',
-    defaultevent: true,
-    id: 6
-  },
-  {
-    date: 26,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 1,
-    event: '2-2',
-    defaultevent: true,
-    id: 7
-  },
-  {
-    date: 4,
-    year: 2024,
-    month: 2,
-    time: 1,
-    room: 1,
-    event: '2-2',
-    defaultevent: true,
-    id: 8
-  },
-  {
-    event: '3-4',
-    date: 31,
-    year: 2024,
-    month: 0,
-    time: 2,
-    room: 1,
-    defaultevent: false,
-    id: 53
-  },
-  {
-    event: '조윤식',
-    date: 7,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 1,
-    defaultevent: false,
-    id: 54
-  },
-  {
-    event: '김필곤',
-    date: 7,
-    year: 2024,
-    month: 1,
-    time: 2,
-    room: 2,
-    defaultevent: false,
-    id: 55
-  },
-  {
-    event: '새싹반',
-    date: 15,
-    year: 2024,
-    month: 1,
-    time: 0,
-    room: 2,
-    defaultevent: false,
-    id: 56
-  },
-  {
-    event: '6-4',
-    date: 29,
-    year: 2024,
-    month: 0,
-    time: 1,
-    room: 2,
-    defaultevent: true,
-    id: 57
-  },
-  {
-    date: 5,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 2,
-    event: '6-4',
-    defaultevent: true,
-    id: 58
-  },
-  {
-    date: 12,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 2,
-    event: '6-4',
-    defaultevent: true,
-    id: 59
-  },
-  {
-    date: 19,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 2,
-    event: '6-4',
-    defaultevent: true,
-    id: 60
-  },
-  {
-    date: 26,
-    year: 2024,
-    month: 1,
-    time: 1,
-    room: 2,
-    event: '6-4',
-    defaultevent: true,
-    id: 61
-  },
-  {
-    date: 4,
-    year: 2024,
-    month: 2,
-    time: 1,
-    room: 2,
-    event: '6-4',
-    defaultevent: true,
-    id: 62
-  }]
-const initialState = [
-    {id:1,date:29,year:2024,month:0,time:0,room:1,defaultevent:true,event:"조윤식"},
-    {id:2,date:30,year:2024,month:0,time:1,room:1,defaultevent:false,event:"5-3"},
-    ...sample
-];
+export const initiateEvents =createRequestThunk(INITIATE, getEvents);
+// export const insert = createAction(INSERT, event=>({
+//     ...event,
+//     id: id++,
+// }));
+export const insert = (event) => async dispatch => {
+  try{
+    const response = await postEvents({...event,id:id++})
+    dispatch({
+      type: INSERT,
+      payload: response.data
+    })
+  } catch(error){
+    console.log(error);
+    throw error;
+  }
+}
+// export const remove = createAction(REMOVE,id=>id);
+export const remove = createRequestThunk(REMOVE, deleteEvents)
+// export const removeDefault = createAction(REMOVEDEFAULT, removeEvent=>removeEvent);
+export const removeDefault = (removeEvent) => async dispatch => {
+  try{
+    await removeEvents(removeEvent)
+    dispatch({
+      type: REMOVEDEFAULT,
+      payload: removeEvent
+    })
+  } catch(error){
+    console.log(error);
+    throw error;
+  }
+}
+// export const clearEvents = createAction(CLEAREVENTS, clearEvent=>clearEvent);
+export const clearEvents = (clearEvent) => async dispatch =>{
+  try{
+    await clearAllEvents(clearEvent)
+    dispatch({
+      type: CLEAREVENTS,
+      payload: clearEvent
+    })
+  } catch(error){
+    console.log(error);
+    throw error;
+  }
+}
+
+const initialState = [];
 const events = handleActions({
+    [INITIATE]: (state,action)=>{
+      id = action.payload.length === 0? 1 : action.payload[action.payload.length-1].id + 1 ;
+      return action.payload
+    },
     [INSERT]: (state,action)=>(state.concat(action.payload)),
     [REMOVE]: (state,action)=>(state.filter(event=> event.id !== action.payload)),
     [REMOVEDEFAULT]: (state,action)=>(state.filter(event=>
